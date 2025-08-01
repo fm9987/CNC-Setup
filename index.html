@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rocket Cooling</title>
+        <link rel="stylesheet" href="main.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet" />
+    </head>
+
+    <body>
+        <div class="Title"><h1>CNC Job Setup</h1></div>
+       
+        <!-- Menus -->
+         <!-- Machine the head: lightning hole, breakage, wall thickness-->
+        <div class="container">
+            <!-- Left menu -->
+            <div class="side-box left-box">
+                Work Side
+                <div class="switch-row">
+                    <span class="Button2">Machine Head</span>
+                    <input type="checkbox" role="switch" id="R"> 
+                </div>
+
+                <!-- Film cooling option -->
+                <div class="switch-row">
+                    <span>Underhead length</span>
+                    <input type="checkbox" role="switch" id="F"> 
+                </div>
+                <!-- Film cooling variables -->
+                <!-- <div class="Variables" style="display: none;"> -->
+                <!-- <div class="Variables">
+                    <input type="text" placeholder="Head Size">
+                    <input type="text" placeholder="Head Height">
+                    <div class="Button">Location</div>
+                </div> -->
+                <div class="Button" id="Sim">
+                    Select
+                </div>
+            </div>
+
+            <div class="side-box left-box">
+                <!-- Regen cooling option -->
+                Machine Head
+                <div class="switch-row">
+                    <span class="Button2">Finish Face</span>
+                    <input type="checkbox" role="switch" id="R"> 
+                </div>
+
+                <div class="switch-row">
+                    <span class="Button2">Flange</span>
+                    <input type="checkbox" role="switch" id="R"> 
+                </div>
+
+                <div class="switch-row">
+                    <span>Breakage</span>
+                    <input type="checkbox" role="switch" id="F"> 
+                </div>
+
+                <div class="switch-row">
+                    <span class="Button2">Lightening hole</span>
+                    <input type="checkbox" role="switch" id="R"> 
+                </div>
+
+                <div class="switch-row">
+                    <span class="Button2">Washer</span>
+                    <input type="checkbox" role="switch" id="R"> 
+                </div>
+
+                <!-- <div class="Variables" style="display: none;"> -->
+                <!-- <div class="Variables">
+                    <input type="text" placeholder="Head Size">
+                    <input type="text" placeholder="Head Height">
+                    <div class="Button">Location</div>
+                </div> -->
+
+                <!-- Run simulation here -->
+                <div class="Button" id="Sim">
+                    Insert Dimensions
+                </div>
+            </div>
+
+            <div class="side-box left-box">
+                <!-- Regen cooling option -->
+                Dimensions:
+
+                <!-- <div class="Variables" style="display: none;"> -->
+                <div class="Variables">
+                    Face &#8960;:<input type="text" placeholder="Min"><input type="text" placeholder="Max">
+                    <div class="full-width-row">
+                        Head &#8960;:<input type="text" class="measured" placeholder="Measured">
+                    </div>
+                    <div class="full-width-row">
+                        Head H:<input type="text" class="measured" placeholder="Measured">
+                    </div>
+                    Head H :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
+                    Head &#8736; :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
+                    Flange &#8960; :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
+                    Flange T :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
+                    Break L :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
+                    Break &#8736; :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
+                    Hole &#8960; :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
+                    Wall T :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
+                    Washer &#8960; :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
+                    Washer H :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
+                </div>
+
+                <!-- Run simulation here -->
+                <div class="Button" id="Sim" onclick="DownloadFile()">
+                    Make Code
+                </div>
+            </div>
+
+            <div id="canvas" class="rocket">
+                <div id="Status" class="Button2">Display Job:</div>
+                <canvas id="rocketCanvas"></canvas>
+            </div>
+        </div>
+        
+    <script>       
+        function downloadFile() {
+            const data = "This is content from the HTML/JS";
+            const blob = new Blob([data], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "output.txt";
+            a.click();
+
+            URL.revokeObjectURL(url); // cleanup
+        }
+        </script>
+    </script>
+    </body>
+</html>
