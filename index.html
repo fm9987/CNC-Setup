@@ -115,20 +115,49 @@
             </div>
         </div>
         
-    <script>       
-        function downloadFile() {
-            const data = "This is content from the HTML/JS";
-            const blob = new Blob([data], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
+    <script>
+    function DownloadFile() {
+        const variablesBox = document.querySelector(".Variables");
+        const inputs = variablesBox.querySelectorAll("input");
 
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "output.txt";
-            a.click();
+        let output = "CNC Job Dimensions:\n\n";
 
-            URL.revokeObjectURL(url); // cleanup
+        // Get all label+input sets (assumes labels are in the innerText or HTML)
+        const children = [...variablesBox.childNodes];
+
+        for (const child of children) {
+            if (child.nodeType === Node.TEXT_NODE) {
+                // Handle text between elements, skip whitespace
+                const text = child.textContent.trim();
+                if (text) output += `${text}\n`;
+            } else if (child.classList?.contains("full-width-row")) {
+                // Handle full-width-row inputs with inline labels
+                const label = child.childNodes[0]?.textContent?.trim();
+                const val = child.querySelector("input")?.value || "";
+                output += `${label} ${val}\n`;
+            } else if (child.tagName === "INPUT") {
+                // Standalone input (not used in your current setup, but good fallback)
+                output += `Input: ${child.value}\n`;
+            }
         }
-        </script>
+
+        // Add inputs with no labels (usually grouped after a label)
+        inputs.forEach((input) => {
+            if (!input.closest(".full-width-row")) {
+                const placeholder = input.placeholder || "Input";
+                output += `${placeholder}: ${input.value}\n`;
+            }
+        });
+
+        // Create file and download
+        const blob = new Blob([output], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "cnc_job.txt";
+        a.click();
+        URL.revokeObjectURL(url);
+    }
     </script>
     </body>
 </html>
