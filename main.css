@@ -207,7 +207,7 @@ input[role="switch"]::after {
   flex-wrap: wrap;            /* allow wrapping to the next line */
   justify-content: center;    /* center rows */
   gap: 0.5vw;                 /* space between inputs */
-  margin-top: 0.5vh;
+  /* margin-top: 0.5vh; */
   margin-left: 0.5vw;
 }
 
@@ -262,4 +262,18 @@ input[role="switch"]:checked::after {
   color: black;             /* or match to your regular text color */
   opacity: 0.5;               /* ensures it's not faded */
   font-family: "Audiowide", sans-serif;
+}
+
+.hide {
+    visibility: hidden;
+    height: 0;
+    opacity: 0;
+    transition: height 0.3s ease, opacity 0.3s ease;
+}
+
+.show {
+    visibility: visible;
+    height: auto;
+    opacity: 1;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }

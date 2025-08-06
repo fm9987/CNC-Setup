@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Rocket Cooling</title>
+        <title>CNC Job Setup</title>
         <link rel="stylesheet" href="main.css" />
         <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet" />
     </head>
@@ -17,54 +17,51 @@
                 Work Side
                 <div class="switch-row">
                     <span class="Button2">Machine Head</span>
-                    <input type="checkbox" role="switch" id="R"> 
+                    <input type="checkbox" role="switch" id="Machine_Head"> 
                 </div>
 
                 <!-- Film cooling option -->
                 <div class="switch-row">
                     <span>Underhead length</span>
-                    <input type="checkbox" role="switch" id="F"> 
+                    <input type="checkbox" role="switch" id="Underhead"> 
                 </div>
-                <!-- Film cooling variables -->
-                <!-- <div class="Variables" style="display: none;"> -->
-                <!-- <div class="Variables">
-                    <input type="text" placeholder="Head Size">
-                    <input type="text" placeholder="Head Height">
-                    <div class="Button">Location</div>
-                </div> -->
-                <div class="Button" id="Sim">
+                <!-- <div class="Button" id="Sim">
                     Select
-                </div>
+                </div> -->
             </div>
 
             <div class="side-box left-box">
                 <!-- Regen cooling option -->
+                <div id="Mach_Head" style="display: none;">
                 Machine Head
                 <div class="switch-row">
                     <span class="Button2">Finish Face</span>
-                    <input type="checkbox" role="switch" id="R"> 
+                    <input type="checkbox" role="switch" id="Face"> 
                 </div>
 
                 <div class="switch-row">
                     <span class="Button2">Flange</span>
-                    <input type="checkbox" role="switch" id="R"> 
-                </div>
-
-                <div class="switch-row">
-                    <span>Breakage</span>
-                    <input type="checkbox" role="switch" id="F"> 
+                    <input type="checkbox" role="switch" id="Flange"> 
                 </div>
 
                 <div class="switch-row">
                     <span class="Button2">Lightening hole</span>
-                    <input type="checkbox" role="switch" id="R"> 
+                    <input type="checkbox" role="switch" id="Hole"> 
                 </div>
 
                 <div class="switch-row">
                     <span class="Button2">Washer</span>
-                    <input type="checkbox" role="switch" id="R"> 
+                    <input type="checkbox" role="switch" id="Washer"> 
+                </div>
                 </div>
 
+                <div id="Underhead_T" style="display: none;">
+                Underhead
+                <div class="switch-row" >
+                    <span class="Button2">Length</span>
+                    <input type="checkbox" role="switch" id="Under"> 
+                </div>
+                </div>
                 <!-- <div class="Variables" style="display: none;"> -->
                 <!-- <div class="Variables">
                     <input type="text" placeholder="Head Size">
@@ -73,38 +70,55 @@
                 </div> -->
 
                 <!-- Run simulation here -->
-                <div class="Button" id="Sim">
+                <!-- <div class="Button" id="Sim">
                     Insert Dimensions
-                </div>
+                </div> -->
             </div>
 
             <div class="side-box left-box">
                 <!-- Regen cooling option -->
-                Dimensions:
-
-                <!-- <div class="Variables" style="display: none;"> -->
+                <div id="Dim">Dimensions:</div>
                 <div class="Variables">
-                    Face &#8960;:<input type="text" placeholder="Min"><input type="text" placeholder="Max">
-                    <div class="full-width-row">
-                        Head &#8960;:<input type="text" class="measured" placeholder="Measured">
-                    </div>
-                    <div class="full-width-row">
-                        Head H:<input type="text" class="measured" placeholder="Measured">
-                    </div>
-                    Head H :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
-                    Head &#8736; :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
-                    Flange &#8960; :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
-                    Flange T :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
-                    Break L :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
-                    Break &#8736; :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
-                    Hole &#8960; :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
-                    Wall T :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
-                    Washer &#8960; :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
-                    Washer H :<input type="text" placeholder="Min"><input type="text" placeholder="Max">
+                <div class="full-width-row">
+                    Head &#8960;:<input type="text" id="HDme" class="measured" placeholder="Measured">
+                </div>
+                <div id="V_Face" class="Variables hide">
+                Face &#8960;:<input type="text" id="FDm" placeholder="Min"><input type="text" id="FDM" placeholder="Max">
+                <div class="full-width-row">
+                    Head H:<input type="text" id="HHme" class="measured" placeholder="Measured">
+                </div>
+                Head H :<input type="text" id="HHm" placeholder="Min"><input type="text" id="HHM" placeholder="Max">
+                Head &#8736; :<input type="text" id="HAm" placeholder="Min"><input type="text" id="HAM" placeholder="Max">
+                </div>
+                <div id="V_Flange" class="Variables hide">
+                <div class="full-width-row">
+                    Flange &#8960;:<input type="text" id="FDme" class="measured" placeholder="Measured">
+                </div>
+                Flange &#8960; :<input type="text" id="fDm" placeholder="Min"><input type="text" id="fDM" placeholder="Max">
+                <div class="full-width-row">
+                    Flange T:<input type="text" id="FTme" class="measured" placeholder="Measured">
+                </div>
+                </div>
+                <div id="V_Hole" class="Variables hide">
+                Hole &#8960; :<input type="text" id="HDm" placeholder="Min"><input type="text" id="HDM" placeholder="Max">
+                Wall T :<input type="text" id="WTm" placeholder="Min"><input type="text" id="WTM" placeholder="Max">
+                </div>
+                <div id="V_Washer" class="Variables hide">
+                <div class="full-width-row">
+                    Flange &#8960;:<input type="text" id="fDme" class="measured" placeholder="Measured">
+                </div>
+                Washer &#8960; :<input type="text" id="WDm" placeholder="Min"><input type="text" id="WDM" placeholder="Max">
+                Washer H :<input type="text" id="WHm" placeholder="Min"><input type="text" id="WHM" placeholder="Max">
+                </div>
+                <div id="V_Under" class="Variables hide"> 
+                Length :<input type="text" id="Lme" placeholder="Min"><input type="text" id="WDM" placeholder="Max">
+                Length :<input type="text" id="Lm" placeholder="Min"><input type="text" id="LM" placeholder="Max">
+                </div>
                 </div>
 
                 <!-- Run simulation here -->
-                <div class="Button" id="Sim" onclick="DownloadFile()">
+                <div class="Button" id="Sim" onclick="checkSwitches()">
+                <!-- <div class="Button" id="Sim" onclick="DownloadFile()"> -->
                     Make Code
                 </div>
             </div>
@@ -116,38 +130,58 @@
         </div>
         
     <script>
-    function DownloadFile() {
-        const variablesBox = document.querySelector(".Variables");
-        const inputs = variablesBox.querySelectorAll("input");
-
-        let output = "CNC Job Dimensions:\n\n";
-
-        // Get all label+input sets (assumes labels are in the innerText or HTML)
-        const children = [...variablesBox.childNodes];
-
-        for (const child of children) {
-            if (child.nodeType === Node.TEXT_NODE) {
-                // Handle text between elements, skip whitespace
-                const text = child.textContent.trim();
-                if (text) output += `${text}\n`;
-            } else if (child.classList?.contains("full-width-row")) {
-                // Handle full-width-row inputs with inline labels
-                const label = child.childNodes[0]?.textContent?.trim();
-                const val = child.querySelector("input")?.value || "";
-                output += `${label} ${val}\n`;
-            } else if (child.tagName === "INPUT") {
-                // Standalone input (not used in your current setup, but good fallback)
-                output += `Input: ${child.value}\n`;
-            }
+    document.getElementById('Machine_Head').addEventListener('click', function() {
+        if (this.checked){
+            document.getElementById('Mach_Head').style.display = 'block';
+            document.getElementById('Dim').style.display = 'block';
+        }else{
+            document.getElementById('Mach_Head').style.display = 'none';
+            document.getElementById('Dim').style.display = 'none';
         }
+    });
+    document.getElementById('Underhead').addEventListener('click', function() {
+        if (this.checked){
+            document.getElementById('Underhead_T').style.display = 'block';
+            document.getElementById('Dim').style.display = 'block';
+        }else{
+            document.getElementById('Underhead_T').style.display = 'none';
+            document.getElementById('Dim').style.display = 'none';
+        }
+    });
+    function style(Section,N){
+        document.getElementById(Section).addEventListener('click', function() {
+        if (this.checked) {
+            document.getElementById('V_'+Section).classList.remove('hide');
+            document.getElementById('V_'+Section).classList.add('show');
+            N=1;
+        } else {
+            document.getElementById('V_'+Section).classList.remove('show');
+            document.getElementById('V_'+Section).classList.add('hide');
+            N=0;
+        }
+    });};
+    
+    
+    const Face = 0;
+    const Flange = 0;
+    const Breakage = 0;
+    const Hole = 0;
+    const Washer = 0;
+    const Under = 0;
+    style('Face',Face);
+    style('Flange',Flange);
+    style('Hole',Hole);
+    style('Washer',Washer);
+    style('Under',Under);
 
-        // Add inputs with no labels (usually grouped after a label)
-        inputs.forEach((input) => {
-            if (!input.closest(".full-width-row")) {
-                const placeholder = input.placeholder || "Input";
-                output += `${placeholder}: ${input.value}\n`;
-            }
-        });
+    function DownloadFile() {
+        let intro = "(Active Program);\n(Job Number);\n;\n";
+    
+        // Washer H :<input type="text" id="WHm" placeholder="Min"><input type="text" id="WDM" placeholder="Max">
+        let output = intro;
+        output+=checkSwitches();
+        output+=`M30;\n`;
+
 
         // Create file and download
         const blob = new Blob([output], { type: 'text/plain' });
@@ -157,7 +191,413 @@
         a.download = "cnc_job.txt";
         a.click();
         URL.revokeObjectURL(url);
+    };
+    
+    function SurfaceFinish(HDme,HHme,HH,FD,HA,msg,end){
+        // HDme - Measured head diameter
+        // HHme - Height measured
+        // HH   - Head height nominal
+        // FD   - Face Diameter
+        // HA   - Head Angle
+        A = HDme + 0.015;
+        B = Math.round((HHme-HH)/0.02)*0.02;
+        D = FD - 0.052;
+        C = (HDme-D)*Math.tan(HA*Math.PI/180)/2;
+        output = `(FINISH FACE);\n`;
+        output += msg;
+        output += `M08;\nG00 X${A.toFixed(4)} Z${B.toFixed(4)};\nG72 P10 Q20 U0.003 W0.003 D0.02 F0.0035;\nN10 G00 Z-${C.toFixed(4)};\n`;
+        output += `G01 X${D.toFixed(4)} Z0.; // Tool of 0.052 diameter assumed, adjust for it\nN20 G01 X-0.065;\nG70 P10 Q20 F0.0025;\n`;
+        output += end;
+        return output
+    };
+
+    function FlangeB(FDme, FD, FTme, msg, end){
+        // FDme - Measured Flange Diameter
+        // FD   - Flange Diameter
+        // FTme - Measured Thickness
+        A = D;
+        B = 0.02;
+        C = 0.015;
+        D = FD;
+        E = FTme + 0.01;
+        F = D - 0.05;
+        G = E - 0.024;
+        H = G + 0.003;
+        I = E + 0.003;
+        output = `(FLANGE);\n`;
+        output += msg;
+        output += `M08;\nG00 X${A.toFixed(4)} Z${B.toFixed(4)};\nG71 P30 Q40 U0 W0 D${C.toFixed(4)} F0.003;\nN30 G00 X${D.toFixed(4)};\n`;
+        output += `G01 X${D.toFixed(4)} Z-${E.toFixed(4)};\nN40 G01 X${A.toFixed(4)} Z-${E.toFixed(4)};\nG00 X${D.toFixed(4)};\nG01 Z-${E.toFixed(4)};\n`;
+        output += `G01 X${F.toFixed(4)} Z${G.toFixed(4)};\nG01 Z-${H.toFixed(4)};\nG01 X${D.toFixed(4)} Z-${I.toFixed(4)};\nG00 X${A.toFixed(4)};\n`;
+        output += end;
+        return output
+    };
+
+    function HoleP(D,T, msg, end){
+        output = `(LIGHTENING HOLE);\n`;
+        output += msg;
+        output += `M08;\nG00 X? Z${Hd.toFixed(4)};\nG72 P10 Q20 U0.003 W0.003 D0.015 F0.004;\nN10 G00 Z-${Z.toFixed(4)};\n`;
+        output += `G01 X${X.toFixed(4)} Z0.; // Tool of 0.052 diameter assumed, adjust for it\nN20 G01 X-0.065;\nG70 P10 Q20 F0.0025;\n`;
+        output += end;
+        return output
+    };
+
+    function WasherP(fDme, WDm, WDM, WH, msg, end){
+        // fDme - Measured Flange Diameter
+        // WD   - Washer Diameter
+        // WH   - Washer Height
+        A = fDme + 0.05;
+        B = -0.02;
+        C = fDme + 0.015;
+        D = 0.015;
+        if (WDM !== "") {
+            E = (WDm+WDM)/2; 
+        } else {
+            E = WDm + 0.005;
+        }
+        F = WH;
+        G = 0.012;
+        H = E - 0.024;
+        I = 0;
+        output = `(WASHER);\n`;
+        output += msg;
+        output += `M08;\nG00 X${A.toFixed(4)} Z${B.toFixed(4)};\nG00 X${C.toFixed(4)};\nG71 P10 Q20 U0 W0 D${D.toFixed(4)} F0.0063;\nN10 G00 X${E.toFixed(4)};\n`;
+        output += `G01 X${E.toFixed(4)} Z${F.toFixed(4)};\nN20 G01 X${C.toFixed(4)} Z${F.toFixed(4)};\nG00 Z${F.toFixed(4)};\n G01 X${E.toFixed(4)} F0.0025;\n`;
+        output += `G01 Z${G.toFixed(4)};\nG03 X${H.toFixed(4)} Z0 R0.012\n`;
+        output += end;
+        return output
+    };
+    
+    function checkSwitches() {
+        // Get the states of the switches (whether they're checked or not)
+        const isFaceChecked = document.getElementById('Face').checked;
+        const isFlangeChecked = document.getElementById('Flange').checked;
+        const isHoleChecked = document.getElementById('Hole').checked;
+        const isWasherChecked = document.getElementById('Washer').checked;
+        const isUnderChecked = document.getElementById('Under').checked;
+        let addition='';
+        let msg = "T1; //Change into correct tool number\nG50 S1200;\nG97 S950 M03;\n";
+        let end = "M09;\nG00 X6. Z7.;\nM01;\n;\n;\n;\n";
+        
+
+
+        const FDm = Number(document.getElementById('FDm').value);
+        const FDM = Number(document.getElementById('FDM').value);
+        const FD = (FDm+FDM)/2;
+        const HDme = Number(document.getElementById('HDme').value);
+        const FDme = Number(document.getElementById('FDme').value);
+        const fDme = Number(document.getElementById('fDme').value);
+        const HHme = Number(document.getElementById('HHme').value);
+        const HHm = Number(document.getElementById('HHm').value);
+        const HHM = Number(document.getElementById('HHM').value);
+        const HH = (HHm+HHM)/2;
+        const HAm = Number(document.getElementById('HAm').value);
+        const HAM = Number(document.getElementById('HAM').value);
+        const HA = (HAm+HAM)/2;
+        const fDm = Number(document.getElementById('fDm').value);
+        const fDM = Number(document.getElementById('fDM').value);
+        const fD = (fDm+fDM)/2;
+        const FTme = Number(document.getElementById('FTme').value);
+        const HDm = Number(document.getElementById('HDm').value);
+        const HDM = Number(document.getElementById('HDM').value);
+        const HD = (HDm+HDM)/2;
+        const WTm = Number(document.getElementById('WTm').value);
+        const WTM = Number(document.getElementById('WTM').value);
+        const WT = (WTm+WTM)/2;
+        const WDm = Number(document.getElementById('WDm').value);
+        const WDM = Number(document.getElementById('WDM').value);
+        const WD = (WDm+WDM)/2;
+        const WHm = Number(document.getElementById('WHm').value);
+        const WHM = Number(document.getElementById('WHM').value);
+        const WH = (WHm+WHM)/2;
+
+        // Calculate a case value for Face, Flange, Hole combination (3 switches)
+        const caseValue1 = (isFaceChecked ? 1 : 0) * 4 + (isFlangeChecked ? 2 : 0) + (isHoleChecked ? 1 : 0);
+
+        // Switch statement to handle all possible cases
+        switch (caseValue1) {
+            case 7:
+                console.log("Case 1: Face, Flange, and Hole are all ON");
+                addition+=SurfaceFinish(HDme, HHme, HH, FD, HA, msg, end);
+                addition+=FlangeB(FDme, FD, FTme, msg, end);
+                // Add Hole
+                break;
+            case 6:
+                console.log("Case 2: Face and Flange are ON, Hole is OFF");
+                addition+=SurfaceFinish(HDme, HHme, HH, FD, HA, msg, end);
+                addition+=FlangeB(FDme, FD, FTme, msg, end);
+                break;
+            case 5:
+                console.log("Case 3: Face and Hole are ON, Flange is OFF");
+                addition+=SurfaceFinish(HDme, HHme, HH, FD, HA, msg, end);
+                // Add Hole function
+                break;
+            case 4:
+                console.log("Case 4: Only Face is ON");
+                addition+=SurfaceFinish(HDme, HHme, HH, FD, HA, msg, end);
+                break;
+            case 3:
+                console.log("Case 5: Flange and Hole are ON, Face is OFF");
+                addition+=FlangeB(FDme, FD, FTme, msg, end);
+                // Add Hole
+                break;
+            case 2:
+                console.log("Case 6: Only Flange is ON");
+                addition+=FlangeB(FDme, FD, FTme, msg, end);
+                break;
+            case 1:
+                console.log("Case 7: Only Hole is ON");
+                // Add Hole
+                break;
+            case 0:
+                if(isUnderChecked){
+                    console.log("UnderHead is ON");
+                    addition+=WasherP(fDme,WDm,WDM,WH,msg,end)
+                }else if(isWasherChecked){
+                    console.log("Washer is ON");
+                };
+                break;
+            // Default case (just in case, but this should never hit with valid combinations)
+            default:
+                console.log("Invalid State!")
+            }
+        drawPart(caseValue1, isFlangeChecked, isWasherChecked, isUnderChecked, isHoleChecked);
+        return addition
+        }; 
+
+    function drawPart(Head, Flange, Washer, Under, Hole) {
+        const FDm = Number(document.getElementById('FDm').value);
+        const FDM = Number(document.getElementById('FDM').value);
+        const FD = (FDm+FDM)/2;
+        const HDme = Number(document.getElementById('HDme').value);
+        const FDme = Number(document.getElementById('FDme').value);
+        const fDme = Number(document.getElementById('fDme').value);
+        const HHme = Number(document.getElementById('HHme').value);
+        const HHm = Number(document.getElementById('HHm').value);
+        const HHM = Number(document.getElementById('HHM').value);
+        const HH = (HHm+HHM)/2;
+        const HAm = Number(document.getElementById('HAm').value);
+        const HAM = Number(document.getElementById('HAM').value);
+        const HA = (HAm+HAM)/2;
+        const fDm = Number(document.getElementById('fDm').value);
+        const fDM = Number(document.getElementById('fDM').value);
+        const fD = (fDm+fDM)/2;
+        const FTme = Number(document.getElementById('FTme').value);
+        const HDm = Number(document.getElementById('HDm').value);
+        const HDM = Number(document.getElementById('HDM').value);
+        const HD = (HDm+HDM)/2;
+        const WTm = Number(document.getElementById('WTm').value);
+        const WTM = Number(document.getElementById('WTM').value);
+        const WT = (WTm+WTM)/2;
+        const WDm = Number(document.getElementById('WDm').value);
+        const WDM = Number(document.getElementById('WDM').value);
+        const WD = (WDm+WDM)/2;
+        const WHm = Number(document.getElementById('WHm').value);
+        const WHM = Number(document.getElementById('WHM').value);
+        const WH = (WHm+WHM)/2;
+        var canvas = document.getElementById("rocketCanvas");
+        var ctx = canvas.getContext("2d");
+
+        // Get the device pixel ratio (DPR)
+        let ratio = window.devicePixelRatio || 1;
+
+        // Set the canvas width and height to account for the pixel ratio
+        // Note: we are using the CSS dimensions as the reference
+        let cssWidth = canvas.offsetWidth;
+        let cssHeight = canvas.offsetHeight;
+
+        // Apply the device pixel ratio
+        canvas.width = cssWidth * ratio;
+        canvas.height = cssHeight * ratio;
+
+        // Scale the context to match the new canvas size
+        ctx.scale(ratio, ratio);
+
+        // Now we can use the adjusted width and height for drawing
+        let width = canvas.width;
+        let height = canvas.height;
+
+        // Set stroke properties
+        ctx.strokeStyle = 'black'; // Black outline
+        ctx.lineWidth = 2; // Thickness of the border
+
+        // Clear the canvas before drawing (optional but good practice)
+        ctx.clearRect(0, 0, width, height);
+        ctx.font = "20px Arial";  // Set font size and family
+        ctx.fillStyle = "black";  // Set the color for the text
+        ctx.textAlign = "center"; // Center the text horizontally
+        ctx.textBaseline = "middle"; // Center the text vertically
+        let x = width/ratio;
+        let y = height/ratio;
+        // Try drawing the part now
+        ctx.beginPath();
+        ctx.moveTo(x*0.4,y); // Start at the bottom
+        ctx.lineTo(x*0.4,y*0.7); // Vertical
+        if (Head!=0 && Flange){   
+            ctx.lineTo(x*0.2,y*0.7); // Horizontal
+            ctx.lineTo(x*0.2,y*0.65); // Vertical Flange
+            ctx.lineTo(x*0.3,y*0.55); // Oblique
+            ctx.lineTo(x*0.3,y*0.47);// Vertical Head
+            ctx.lineTo(x*0.37,y*0.45);// Face Angle
+            ctx.lineTo(x*0.63,y*0.45);// Face
+            ctx.lineTo(x*0.7,y*0.47);// Face Angle
+            ctx.lineTo(x*0.7,y*0.55); // Vertical Right
+            ctx.lineTo(x*0.8,y*0.65);
+            ctx.lineTo(x*0.8,y*0.7);
+            ctx.lineTo(x*0.8,y*0.7);
+        } else if(Head!=0 && !Flange) {
+            ctx.lineTo(x*0.2,y*0.7); 
+            ctx.lineTo(x*0.2,y*0.55);
+            ctx.lineTo(x*0.27,y*0.53); //Face Angle
+            ctx.lineTo(x*0.73,y*0.53); 
+            ctx.lineTo(x*0.8,y*0.55);
+            ctx.lineTo(x*0.8,y*0.7); 
+            ctx.lineTo(x*0.8,y*0.7);
+            ctx.lineTo(x*0.8,y*0.7);
+        }else if(Washer){
+            ctx.lineTo(x*0.30,y*0.7);
+            ctx.quadraticCurveTo(x * 0.25, y * 0.7, x*0.25, y * 0.68);
+            ctx.lineTo(x*0.15,y*0.68);
+            ctx.lineTo(x*0.15,y*0.6);
+            ctx.moveTo(x*0.85,y*0.6);
+            ctx.lineTo(x*0.85,y*0.68);
+            ctx.lineTo(x*0.75,y*0.68);
+            ctx.quadraticCurveTo(x * 0.75, y * 0.7, x*0.7, y * 0.7);
+            ctx.lineTo(x*0.7,y*0.7);
+        }else if(Under){
+            ctx.lineTo(x*0.42,y*0.68);
+            ctx.lineTo(x*0.58,y*0.68);
+            ctx.lineTo(x*0.6,y*0.7);
+        }
+        ctx.lineTo(x*0.6,y*0.7);
+        ctx.lineTo(x*0.6,y);
+        ctx.stroke();
+
+        // Dimensions
+        ctx.beginPath();
+        if (Head!=0 && Flange){
+            //Head Diameter Measured
+            ctx.moveTo(x*0.7,y*0.32);
+            ctx.lineTo(x*0.3,y*0.32);
+            ctx.fillText(HDme, x/2, y*0.3);
+            ctx.moveTo(x*0.3,y*0.34);
+            ctx.lineTo(x*0.3,y*0.30);
+            ctx.moveTo(x*0.7,y*0.34);
+            ctx.lineTo(x*0.7,y*0.30);
+
+            // Face Diameter
+            ctx.moveTo(x*0.7,y*0.4);
+            ctx.lineTo(x*0.3,y*0.4);
+            ctx.fillText(FDm+"-"+FDM, x/2, y*0.38);
+            ctx.moveTo(x*0.3,y*0.42);
+            ctx.lineTo(x*0.3,y*0.38);
+            ctx.moveTo(x*0.7,y*0.42);
+            ctx.lineTo(x*0.7,y*0.38);
+
+            //Face Angle
+            ctx.moveTo(x*0.2,y*0.45);
+            ctx.lineTo(x*0.37,y*0.45);
+            ctx.lineTo(x*0.21,y*0.495);
+            ctx.quadraticCurveTo(x*0.2,y*0.47,x*0.2,y*0.45);
+            ctx.fillText(HAm+"°- "+HAM+"°", x*0.10, y*0.45);
+
+            //Height
+            ctx.moveTo(x*0.9,y*0.45);
+            ctx.lineTo(x*0.9,y*0.7);
+            ctx.fillText(HHm+"-"+HHM, x*0.8, y*0.5);
+            ctx.fillText(HHme, x*0.8, y*0.55);
+            ctx.moveTo(x*0.88,y*0.45);
+            ctx.lineTo(x*0.92,y*0.45);
+            ctx.moveTo(x*0.88,y*0.7);
+            ctx.lineTo(x*0.92,y*0.7);
+
+            // Flange Thickness
+            ctx.moveTo(x*0.5,y*0.55);
+            ctx.lineTo(x*0.5,y*0.7);
+            ctx.fillText(FTme, x*0.55, y*0.62);
+            ctx.moveTo(x*0.52,y*0.55);
+            ctx.lineTo(x*0.48,y*0.55);
+            ctx.moveTo(x*0.48,y*0.7);
+            ctx.lineTo(x*0.52,y*0.7);
+
+            // Flange Diameter
+            ctx.moveTo(x*0.8,y*0.8);
+            ctx.lineTo(x*0.2,y*0.8);
+            ctx.fillText(FDme, x/2, y*0.82);
+            ctx.fillText(fDm+"-"+fDM, x/2, y*0.85);
+            ctx.moveTo(x*0.2,y*0.82);
+            ctx.lineTo(x*0.2,y*0.78);
+            ctx.moveTo(x*0.8,y*0.82);
+            ctx.lineTo(x*0.8,y*0.78);
+        } else if(Head!=0 && !Flange) {
+            //Head Diameter Measured
+            ctx.moveTo(x*0.8,y*0.37);
+            ctx.lineTo(x*0.2,y*0.37);
+            ctx.fillText(HDme, x/2, y*0.35);
+            ctx.moveTo(x*0.2,y*0.39);
+            ctx.lineTo(x*0.2,y*0.35);
+            ctx.moveTo(x*0.8,y*0.39);
+            ctx.lineTo(x*0.8,y*0.35);
+
+            // Face Diameter
+            ctx.moveTo(x*0.73,y*0.45);
+            ctx.lineTo(x*0.27,y*0.45);
+            ctx.fillText(FDm+"-"+FDM, x/2, y*0.43);
+            ctx.moveTo(x*0.27,y*0.47);
+            ctx.lineTo(x*0.27,y*0.43);
+            ctx.moveTo(x*0.73,y*0.47);
+            ctx.lineTo(x*0.73,y*0.43);
+
+            //Face Angle
+            ctx.moveTo(x*0.1,y*0.53);
+            ctx.lineTo(x*0.27,y*0.53);
+            ctx.lineTo(x*0.12,y*0.572);
+            ctx.quadraticCurveTo(x*0.09,y*0.56,x*0.1,y*0.53);
+            ctx.fillText(HAm+"°- "+HAM+"°", x*0.15, y*0.5);
+
+            //Height
+            ctx.moveTo(x*0.9,y*0.53);
+            ctx.lineTo(x*0.9,y*0.7);
+            ctx.fillText(HHm+"-"+HHM, x*0.9, y*0.73);
+            ctx.fillText(HHme, x*0.9, y*0.50);
+            ctx.moveTo(x*0.88,y*0.53);
+            ctx.lineTo(x*0.92,y*0.53);
+            ctx.moveTo(x*0.88,y*0.7);
+            ctx.lineTo(x*0.92,y*0.7);
+        }else if(Washer){
+            // Diameter of the Head
+            ctx.moveTo(x*0.85,y*0.47);
+            ctx.lineTo(x*0.15,y*0.47);
+            ctx.fillText(fDme, x/2, y*0.45);
+            ctx.moveTo(x*0.15,y*0.49);
+            ctx.lineTo(x*0.15,y*0.45);
+            ctx.moveTo(x*0.85,y*0.49);
+            ctx.lineTo(x*0.85,y*0.45);
+
+            // Washer Diameter
+            ctx.moveTo(x*0.75,y*0.62);
+            ctx.lineTo(x*0.25,y*0.62);
+            ctx.fillText(WDm+"-"+WDM, x/2, y*0.6);
+            ctx.moveTo(x*0.25,y*0.64);
+            ctx.lineTo(x*0.25,y*0.6);
+            ctx.moveTo(x*0.75,y*0.64);
+            ctx.lineTo(x*0.75,y*0.6);
+
+            // Washer Height
+            ctx.moveTo(x*0.08,y*0.68);
+            ctx.lineTo(x*0.08,y*0.7);
+            ctx.fillText(WHm, x*0.08, y*0.66);
+            ctx.fillText(WHM, x*0.08, y*0.72);
+            ctx.moveTo(x*0.07,y*0.68);
+            ctx.lineTo(x*0.09,y*0.68);
+            ctx.moveTo(x*0.07,y*0.7);
+            ctx.lineTo(x*0.09,y*0.7);
+        }else if(Under){
+        }
+        ctx.stroke();
     }
+
+
     </script>
     </body>
 </html>
