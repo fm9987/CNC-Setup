@@ -41,7 +41,7 @@
                     <input type="checkbox" role="switch" id="Flange"> 
                 </div>
 
-                <div class="switch-row">
+                <div class="switch-row" style="display: none;">
                     <span class="Button2">Lightening hole</span>
                     <input type="checkbox" role="switch" id="Hole"> 
                 </div>
@@ -108,14 +108,21 @@
                 Washer H :<input type="text" id="WHm" placeholder="Min"><input type="text" id="WHM" placeholder="Max">
                 </div>
                 <div id="V_Under" class="Variables hide"> 
-                Length :<input type="text" id="Lme" placeholder="Min"><input type="text" id="WDM" placeholder="Max">
+                Shank  &#8960;:<input type="text" id="SDm" placeholder="Min"><input type="text" id="SDM" placeholder="Max">
+                <div class="full-width-row">
+                    Length :<input type="text" id="Lme" class="measured" placeholder="Measured">
+                </div>
                 Length :<input type="text" id="Lm" placeholder="Min"><input type="text" id="LM" placeholder="Max">
+                <div class="full-width-row">
+                    TD :<input type="text" id="TDm" placeholder="Min"><input type="text" id="TDM" placeholder="Max">
+                </div>
+                CL :<input type="text" id="CLm" placeholder="Min"><input type="text" id="CLM" placeholder="Max">
                 </div>
                 </div>
 
                 <!-- Run simulation here -->
-                <div class="Button" id="Sim" onclick="checkSwitches()">
-                <!-- <div class="Button" id="Sim" onclick="DownloadFile()"> -->
+                <!-- <div class="Button" id="Sim" onclick="checkSwitches()"> -->
+                <div class="Button" id="Sim" onclick="DownloadFile()">
                     Make Code
                 </div>
             </div>
@@ -239,12 +246,12 @@
     const Face = 0;
     const Flange = 0;
     const Breakage = 0;
-    const Hole = 0;
+    // const Hole = 0;
     const Washer = 0;
     const Under = 0;
     style('Face',Face);
     style('Flange',Flange);
-    style('Hole',Hole);
+    // style('Hole',Hole);
     style('Washer',Washer);
     style('Under',Under);
 
@@ -262,7 +269,7 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "cnc_job.txt";
+        a.download = "cnc_job.nc";
         a.click();
         URL.revokeObjectURL(url);
     };
@@ -307,12 +314,23 @@
         return output
     };
 
-    function HoleP(D,T, msg, end){
-        output = `(LIGHTENING HOLE);\n`;
-        output += msg;
-        output += `M08;\nG00 X? Z${Hd.toFixed(4)};\nG72 P10 Q20 U0.003 W0.003 D0.015 F0.004;\nN10 G00 Z-${Z.toFixed(4)};\n`;
-        output += `G01 X${X.toFixed(4)} Z0.; // Tool of 0.052 diameter assumed, adjust for it\nN20 G01 X-0.065;\nG70 P10 Q20 F0.0025;\n`;
-        output += end;
+    function UnderP(SD,Lme,L,TD,CL){
+        // SD   - Shank Diameter
+        // Lme  - Shank Length Measured
+        // L    - Shank Length Nominal
+        // TD   - TD Finish Grind
+        // CL   - Chamfer Length
+        A = SD + 0.015;
+        B = Math.round((Lme-L)/0.02)*0.02;
+        C = (SD-TD)/2-0.005+0.032+CL;
+        D = 2*C-A;
+        E = 0.;
+        F = 0.065;
+        output = `(CHAMFER);\n`;
+        output += `T1;\nG50 S1500;\nG96 S120 M03;\n`;
+        output += `G00 X${A.toFixed(4)} Z${B.toFixed(4)};\nM08;\nG72 P10 Q20 U0.003 W0.003 D0.02 F0.004;\n`;
+        output += `N10 G00 Z-${C.toFixed(4)};\nG01 X${D.toFixed(4)} Z0.;\nN20 G01 X-${F.toFixed(4)}; G70 P10 Q20 F0.0025;\n`;
+        output += `M09;\nG00 X6. Z7.;\nM30;\n`;
         return output
     };
 
@@ -384,6 +402,20 @@
         const WHm = Number(document.getElementById('WHm').value);
         const WHM = Number(document.getElementById('WHM').value);
         const WH = (WHm+WHM)/2;
+        const SDm = Number(document.getElementById('SDm').value);
+        const SDM = Number(document.getElementById('SDM').value);
+        const SD = (SDm+SDM)/2;
+        const Lm = Number(document.getElementById('Lm').value);
+        const LM = Number(document.getElementById('LM').value);
+        const L = (Lm+LM)/2;
+        const Lme = Number(document.getElementById('Lme').value);
+        const TDm = Number(document.getElementById('TDm').value);
+        const TDM = Number(document.getElementById('TDM').value);
+        const TD = (TDm+TDM)/2;
+        const CLm = Number(document.getElementById('CLm').value);
+        const CLM = Number(document.getElementById('CLM').value);
+        const CL = (CLm+CLM)/2;
+
 
         // Calculate a case value for Face, Flange, Hole combination (3 switches)
         const caseValue1 = (isFaceChecked ? 1 : 0) * 4 + (isFlangeChecked ? 2 : 0) + (isHoleChecked ? 1 : 0);
@@ -394,7 +426,6 @@
                 console.log("Case 1: Face, Flange, and Hole are all ON");
                 addition+=SurfaceFinish(HDme, HHme, HH, FD, HA, msg, end);
                 addition+=FlangeB(FDme, FD, FTme, msg, end);
-                // Add Hole
                 break;
             case 6:
                 console.log("Case 2: Face and Flange are ON, Hole is OFF");
@@ -404,7 +435,6 @@
             case 5:
                 console.log("Case 3: Face and Hole are ON, Flange is OFF");
                 addition+=SurfaceFinish(HDme, HHme, HH, FD, HA, msg, end);
-                // Add Hole
                 break;
             case 4:
                 console.log("Case 4: Only Face is ON");
@@ -413,7 +443,6 @@
             case 3:
                 console.log("Case 5: Flange and Hole are ON, Face is OFF");
                 addition+=FlangeB(FDme, FD, FTme, msg, end);
-                // Add Hole
                 break;
             case 2:
                 console.log("Case 6: Only Flange is ON");
@@ -421,11 +450,11 @@
                 break;
             case 1:
                 console.log("Case 7: Only Hole is ON");
-                // Add Hole
                 break;
             case 0:
                 if(isUnderChecked){
                     console.log("UnderHead is ON");
+                    addition+=UnderP(SD,Lme,L,TD,CL);
                 }else if(isWasherChecked){
                     console.log("Washer is ON");
                     addition+=WasherP(fDme,WDm,WDM,WH,msg,end);
@@ -469,6 +498,20 @@
         const WHm = Number(document.getElementById('WHm').value);
         const WHM = Number(document.getElementById('WHM').value);
         const WH = (WHm+WHM)/2;
+        const SDm = Number(document.getElementById('SDm').value);
+        const SDM = Number(document.getElementById('SDM').value);
+        const SD = (SDm+SDM)/2;
+        const Lm = Number(document.getElementById('Lm').value);
+        const LM = Number(document.getElementById('LM').value);
+        const L = (Lm+LM)/2;
+        const Lme = Number(document.getElementById('Lme').value);
+        const TDm = Number(document.getElementById('TDm').value);
+        const TDM = Number(document.getElementById('TDM').value);
+        const TD = (TDm+TDM)/2;
+        const CLm = Number(document.getElementById('CLm').value);
+        const CLM = Number(document.getElementById('CLM').value);
+        const CL = (CLm+CLM)/2;
+        
         var canvas = document.getElementById("rocketCanvas");
         var ctx = canvas.getContext("2d");
 
@@ -546,23 +589,21 @@
         ctx.lineTo(x*0.6,y);
         ctx.stroke();
 
-        console.log("Hole:", Hole, "Flange:", Flange);
-
-        ctx.beginPath();
-        if(Hole){
-            if(Flange){
-            ctx.moveTo(x*0.42,y*0.45);
-            ctx.lineTo(x*0.42,y*0.5);
-            ctx.lineTo(x*0.58,y*0.5);
-            ctx.lineTo(x*0.58,y*0.45);
-            }else{
-            ctx.moveTo(x*0.42,y*0.53);
-            ctx.lineTo(x*0.42,y*0.58);
-            ctx.lineTo(x*0.58,y*0.58);
-            ctx.lineTo(x*0.58,y*0.53);
-            }
-        }
-        ctx.stroke();
+        // ctx.beginPath();
+        // if(Hole){
+        //     if(Flange){
+        //     ctx.moveTo(x*0.42,y*0.45);
+        //     ctx.lineTo(x*0.42,y*0.5);
+        //     ctx.lineTo(x*0.58,y*0.5);
+        //     ctx.lineTo(x*0.58,y*0.45);
+        //     }else{
+        //     ctx.moveTo(x*0.42,y*0.53);
+        //     ctx.lineTo(x*0.42,y*0.58);
+        //     ctx.lineTo(x*0.58,y*0.58);
+        //     ctx.lineTo(x*0.58,y*0.53);
+        //     }
+        // }
+        // ctx.stroke();
 
         // Dimensions
         ctx.beginPath();
@@ -684,17 +725,32 @@
             ctx.moveTo(x*0.07,y*0.7);
             ctx.lineTo(x*0.09,y*0.7);
         }else if(Under){
-            // Chamfer Length
-            // Chamfer Angle
             // Diameter Shank
             ctx.moveTo(x*0.4,y*0.6);
             ctx.lineTo(x*0.6,y*0.6);
-            ctx.fillText(FDme, x/2, y*0.55);
-            ctx.fillText(fDm+"-"+fDM, x/2, y*0.58);
+            ctx.fillText(SDm+"-"+SDM, x/2, y*0.58);
             ctx.moveTo(x*0.4,y*0.62);
             ctx.lineTo(x*0.4,y*0.58);
             ctx.moveTo(x*0.6,y*0.62);
             ctx.lineTo(x*0.6,y*0.58);
+
+            // Length of Shank
+            ctx.moveTo(x*0.2,y);
+            ctx.lineTo(x*0.2,y*0.68);
+            ctx.fillText(Lm+"-"+LM, x*0.1, y*0.78);
+            ctx.fillText(Lme, x*0.3, y*0.78);
+            ctx.moveTo(x*0.18,y*0.68);
+            ctx.lineTo(x*0.22,y*0.68);
+            
+            // Chamfer Length
+            ctx.moveTo(x*0.68,y*0.68);
+            ctx.lineTo(x*0.68,y*0.7);
+            ctx.fillText(CLm, x*0.68, y*0.66);
+            ctx.fillText(CLM, x*0.68, y*0.72);
+            ctx.moveTo(x*0.66,y*0.68);
+            ctx.lineTo(x*0.7,y*0.68);
+            ctx.moveTo(x*0.66,y*0.7);
+            ctx.lineTo(x*0.7,y*0.7);
         }
         ctx.stroke();
     }
