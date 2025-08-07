@@ -22,7 +22,7 @@
 
                 <!-- Film cooling option -->
                 <div class="switch-row">
-                    <span>Underhead length</span>
+                    <span>Underhead</span>
                     <input type="checkbox" role="switch" id="Underhead"> 
                 </div>
                 <!-- <div class="Button" id="Sim">
@@ -79,7 +79,7 @@
                 <!-- Regen cooling option -->
                 <div id="Dim">Dimensions:</div>
                 <div class="Variables">
-                <div class="full-width-row">
+                <div id="Start" class="full-width-row">
                     Head &#8960;:<input type="text" id="HDme" class="measured" placeholder="Measured">
                 </div>
                 <div id="V_Face" class="Variables hide">
@@ -131,21 +131,50 @@
         
     <script>
     document.getElementById('Machine_Head').addEventListener('click', function() {
-        if (this.checked){
+        if (this.checked) {
             document.getElementById('Mach_Head').style.display = 'block';
-            document.getElementById('Dim').style.display = 'block';
-        }else{
+            
+            // Simulate "unchecking" Underhead checkbox
+            let underheadCheckbox = document.getElementById('Underhead');
+            if (underheadCheckbox.checked) {
+                underheadCheckbox.checked = false;
+                document.getElementById('Underhead_T').style.display = 'none';
+                document.getElementById('Start').classList.remove('hide');
+                document.getElementById('Start').classList.add('show');
+            }
+
+        } else {
             document.getElementById('Mach_Head').style.display = 'none';
-            document.getElementById('Dim').style.display = 'none';
         }
     });
     document.getElementById('Underhead').addEventListener('click', function() {
-        if (this.checked){
+        if (this.checked) {
             document.getElementById('Underhead_T').style.display = 'block';
-            document.getElementById('Dim').style.display = 'block';
-        }else{
+            document.getElementById('Start').classList.add('hide');
+            document.getElementById('Start').classList.remove('show');
+
+            // Simulate "unchecking" Machine_Head checkbox
+            let machineHeadCheckbox = document.getElementById('Machine_Head');
+            if (machineHeadCheckbox.checked) {
+                machineHeadCheckbox.checked = false;
+                document.getElementById('Mach_Head').style.display = 'none';
+            }
+            // If active Head hide variables
+            document.getElementById('V_Washer').classList.remove('show');
+            document.getElementById('V_Washer').classList.add('hide');
+            document.getElementById('V_Face').classList.remove('show');
+            document.getElementById('V_Face').classList.add('hide');
+            document.getElementById('V_Flange').classList.remove('show');
+            document.getElementById('V_Flange').classList.add('hide');
+            document.getElementById('V_Hole').classList.remove('show');
+            document.getElementById('V_Hole').classList.add('hide');
+
+
+        } else {
             document.getElementById('Underhead_T').style.display = 'none';
-            document.getElementById('Dim').style.display = 'none';
+            // document.getElementById('Dim').style.display = 'none'; // You can leave this if you need the dimming to disappear as well.
+            document.getElementById('Start').classList.remove('hide');
+            document.getElementById('Start').classList.add('show');
         }
     });
     function style(Section,N){
@@ -153,13 +182,49 @@
         if (this.checked) {
             document.getElementById('V_'+Section).classList.remove('hide');
             document.getElementById('V_'+Section).classList.add('show');
-            N=1;
         } else {
             document.getElementById('V_'+Section).classList.remove('show');
             document.getElementById('V_'+Section).classList.add('hide');
-            N=0;
+        };
+        if (Section == 'Washer') {
+            if (this.checked) {
+                // Hide the Start button
+                document.getElementById('Start').classList.add('hide');
+                document.getElementById('Start').classList.remove('show');
+
+                // Uncheck other checkboxes (Face, Flange, Hole)
+                document.getElementById('Face').checked = false;
+                document.getElementById('Flange').checked = false;
+                document.getElementById('Hole').checked = false;
+
+                // Hide their associated content (if any)
+                document.getElementById('V_Face').classList.remove('show');
+                document.getElementById('V_Face').classList.add('hide');
+                document.getElementById('V_Flange').classList.remove('show');
+                document.getElementById('V_Flange').classList.add('hide');
+                document.getElementById('V_Hole').classList.remove('show');
+                document.getElementById('V_Hole').classList.add('hide');
+                
+                // Optionally, reset variables related to Face, Flange, Hole
+                // You could add logic to reset or clear variables here if needed
+                // Example: FaceN = 0; FlangeN = 0; HoleN = 0;
+            }else{
+                // Show the Start button again if Washer is unchecked
+                document.getElementById('Start').classList.remove('hide');
+                document.getElementById('Start').classList.add('show');
+            }
+        }else if(Section!='Under'){
+            // Uncheck Washer if on
+            document.getElementById('Start').classList.remove('hide');
+            document.getElementById('Start').classList.add('show');
+            document.getElementById('Washer').checked = false;
+
+            // Hide Washer associated content (if any)
+            document.getElementById('V_Washer').classList.remove('show');
+            document.getElementById('V_Washer').classList.add('hide');
         }
-    });};
+        })
+    };
     
     
     const Face = 0;
@@ -330,7 +395,7 @@
             case 5:
                 console.log("Case 3: Face and Hole are ON, Flange is OFF");
                 addition+=SurfaceFinish(HDme, HHme, HH, FD, HA, msg, end);
-                // Add Hole function
+                // Add Hole
                 break;
             case 4:
                 console.log("Case 4: Only Face is ON");
@@ -352,9 +417,9 @@
             case 0:
                 if(isUnderChecked){
                     console.log("UnderHead is ON");
-                    addition+=WasherP(fDme,WDm,WDM,WH,msg,end)
                 }else if(isWasherChecked){
                     console.log("Washer is ON");
+                    addition+=WasherP(fDme,WDm,WDM,WH,msg,end);
                 };
                 break;
             // Default case (just in case, but this should never hit with valid combinations)
@@ -467,7 +532,6 @@
         }else if(Under){
             ctx.lineTo(x*0.42,y*0.68);
             ctx.lineTo(x*0.58,y*0.68);
-            ctx.lineTo(x*0.6,y*0.7);
         }
         ctx.lineTo(x*0.6,y*0.7);
         ctx.lineTo(x*0.6,y);
@@ -486,13 +550,13 @@
             ctx.lineTo(x*0.7,y*0.30);
 
             // Face Diameter
-            ctx.moveTo(x*0.7,y*0.4);
-            ctx.lineTo(x*0.3,y*0.4);
+            ctx.moveTo(x*0.63,y*0.4);
+            ctx.lineTo(x*0.37,y*0.4);
             ctx.fillText(FDm+"-"+FDM, x/2, y*0.38);
-            ctx.moveTo(x*0.3,y*0.42);
-            ctx.lineTo(x*0.3,y*0.38);
-            ctx.moveTo(x*0.7,y*0.42);
-            ctx.lineTo(x*0.7,y*0.38);
+            ctx.moveTo(x*0.37,y*0.42);
+            ctx.lineTo(x*0.37,y*0.38);
+            ctx.moveTo(x*0.63,y*0.42);
+            ctx.lineTo(x*0.63,y*0.38);
 
             //Face Angle
             ctx.moveTo(x*0.2,y*0.45);
