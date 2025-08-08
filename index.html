@@ -284,7 +284,8 @@
         B = Math.round((HHme-HH)/0.02)*0.02;
         D = FD - 0.052;
         C = (HDme-D)*Math.tan(HA*Math.PI/180)/2;
-        output = `(FINISH FACE);\n`;
+        output = `(Change into correct tool number);\n`;
+        output += `(FINISH FACE);\n`;
         output += msg;
         output += `M08;\nG00 X${A.toFixed(4)} Z${B.toFixed(4)};\nG72 P10 Q20 U0.003 W0.003 D0.02 F0.0035;\nN10 G00 Z-${C.toFixed(4)};\n`;
         output += `G01 X${D.toFixed(4)} Z0.; // Tool of 0.052 diameter assumed, adjust for it\nN20 G01 X-0.065;\nG70 P10 Q20 F0.0025;\n`;
@@ -292,24 +293,25 @@
         return output
     };
 
-    function FlangeB(FDme, FD, FTme, msg, end){
+    function FlangeB(FDme, fD, FTme, msg, end){
         // FDme - Measured Flange Diameter
-        // FD   - Flange Diameter
+        // fD   - Flange Diameter
         // FTme - Measured Thickness
-        A = D;
+        A = FDme;
+        D = fD;
         B = 0.02;
         C = 0.015;
-        D = FD;
         E = FTme + 0.01;
         F = D - 0.05;
-        G = E - 0.024;
-        H = G + 0.003;
-        I = E + 0.003;
-        output = `(FLANGE);\n`;
+        G = E + 0.024;
+        H = G - 0.003;
+        I = E - 0.003;
+        output = `(Change into correct tool number);\n`;
+        output += `(FLANGE);\n`;
         output += msg;
         output += `M08;\nG00 X${A.toFixed(4)} Z${B.toFixed(4)};\nG71 P30 Q40 U0 W0 D${C.toFixed(4)} F0.003;\nN30 G00 X${D.toFixed(4)};\n`;
         output += `G01 X${D.toFixed(4)} Z-${E.toFixed(4)};\nN40 G01 X${A.toFixed(4)} Z-${E.toFixed(4)};\nG00 X${D.toFixed(4)};\nG01 Z-${E.toFixed(4)};\n`;
-        output += `G01 X${F.toFixed(4)} Z${G.toFixed(4)};\nG01 Z-${H.toFixed(4)};\nG01 X${D.toFixed(4)} Z-${I.toFixed(4)};\nG00 X${A.toFixed(4)};\n`;
+        output += `G01 X${F.toFixed(4)} Z-${G.toFixed(4)};\nG01 Z-${H.toFixed(4)};\nG01 X${D.toFixed(4)} Z-${I.toFixed(4)};\nG00 X${A.toFixed(4)};\n`;
         output += end;
         return output
     };
@@ -326,11 +328,12 @@
         D = 2*C-A;
         E = 0.;
         F = 0.065;
-        output = `(CHAMFER);\n`;
+        output = `(Change into correct tool number);\n`;
+        output += `(CHAMFER);\n`;
         output += `T1;\nG50 S1500;\nG96 S120 M03;\n`;
         output += `G00 X${A.toFixed(4)} Z${B.toFixed(4)};\nM08;\nG72 P10 Q20 U0.003 W0.003 D0.02 F0.004;\n`;
         output += `N10 G00 Z-${C.toFixed(4)};\nG01 X${D.toFixed(4)} Z0.;\nN20 G01 X-${F.toFixed(4)}; G70 P10 Q20 F0.0025;\n`;
-        output += `M09;\nG00 X6. Z7.;\nM30;\n`;
+        output += `M09;\nG00 X6. Z7.;\n`;
         return output
     };
 
@@ -351,11 +354,12 @@
         G = 0.012;
         H = E - 0.024;
         I = 0;
-        output = `(WASHER);\n`;
+        output = `(Change into correct tool number);\n`;
+        output += `(WASHER);\n`;
         output += msg;
         output += `M08;\nG00 X${A.toFixed(4)} Z${B.toFixed(4)};\nG00 X${C.toFixed(4)};\nG71 P10 Q20 U0 W0 D${D.toFixed(4)} F0.0063;\nN10 G00 X${E.toFixed(4)};\n`;
         output += `G01 X${E.toFixed(4)} Z${F.toFixed(4)};\nN20 G01 X${C.toFixed(4)} Z${F.toFixed(4)};\nG00 Z${F.toFixed(4)};\n G01 X${E.toFixed(4)} F0.0025;\n`;
-        output += `G01 Z${G.toFixed(4)};\nG03 X${H.toFixed(4)} Z0 R0.012\n`;
+        output += `G01 Z${G.toFixed(4)};\nG03 X${H.toFixed(4)} Z0 R0.012;\n`;
         output += end;
         return output
     };
@@ -368,8 +372,8 @@
         const isWasherChecked = document.getElementById('Washer').checked;
         const isUnderChecked = document.getElementById('Under').checked;
         let addition='';
-        let msg = "T1; //Change into correct tool number\nG50 S1200;\nG97 S950 M03;\n";
-        let end = "M09;\nG00 X6. Z7.;\nM01;\n;\n;\n;\n";
+        let msg = "T1;\nG50 S1200;\nG97 S950 M03;\n";
+        let end = "M09;\nG00 X6. Z7.;\n";
         
 
 
@@ -425,12 +429,14 @@
             case 7:
                 console.log("Case 1: Face, Flange, and Hole are all ON");
                 addition+=SurfaceFinish(HDme, HHme, HH, FD, HA, msg, end);
-                addition+=FlangeB(FDme, FD, FTme, msg, end);
+                addition+=`M01;\n;\n;\n`;
+                addition+=FlangeB(FDme, fD, FTme, msg, end);
                 break;
             case 6:
                 console.log("Case 2: Face and Flange are ON, Hole is OFF");
                 addition+=SurfaceFinish(HDme, HHme, HH, FD, HA, msg, end);
-                addition+=FlangeB(FDme, FD, FTme, msg, end);
+                addition+=`M01;\n;\n;\n`;
+                addition+=FlangeB(FDme, fD, FTme, msg, end);
                 break;
             case 5:
                 console.log("Case 3: Face and Hole are ON, Flange is OFF");
@@ -442,11 +448,11 @@
                 break;
             case 3:
                 console.log("Case 5: Flange and Hole are ON, Face is OFF");
-                addition+=FlangeB(FDme, FD, FTme, msg, end);
+                addition+=FlangeB(FDme, fD, FTme, msg, end);
                 break;
             case 2:
                 console.log("Case 6: Only Flange is ON");
-                addition+=FlangeB(FDme, FD, FTme, msg, end);
+                addition+=FlangeB(FDme, fD, FTme, msg, end);
                 break;
             case 1:
                 console.log("Case 7: Only Hole is ON");
